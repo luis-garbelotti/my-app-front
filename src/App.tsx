@@ -1,19 +1,22 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import SignUp from './pages/SignUp/SignUp';
+import SignIn from './pages/SignIn/SignIn';
+import { AlertProvider } from './contexts/AlertContext';
+import Alert from './components/Alert/Alert';
 
 function App() {
   return (
-    <>
+    <AlertProvider>
       <BrowserRouter>
         <Routes>
-          <Route path='/' />
-          <Route path='/signUp' />
+          <Route path='/' element={<SignIn />} />
+          <Route path='/signup' element={<SignUp />} />
           <Route path='/home' />
         </Routes>
       </BrowserRouter>
-    </>
+      <Alert />
+    </AlertProvider>
   );
 }
 
