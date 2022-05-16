@@ -15,7 +15,8 @@ const style = {
   container: { 
     display: 'flex', 
     flexDirection: 'column', 
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   boxInputContainer: {
     width: '100%', 
@@ -58,7 +59,6 @@ const style = {
     borderRadius: '10px',
   },
   login: {
-    marginTop: '10px',
     fontSize: '12px',
     color: '#fff',
     '&:hover': {

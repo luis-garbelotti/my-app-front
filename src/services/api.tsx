@@ -10,14 +10,22 @@ function createConfig(token: string): any {
   }
 }
 
-interface authData {
+interface UserData {
   name: string,
   email: string,
   password: string
 }
 
-export async function signUp(body: authData) {
+type AuthData  = Omit<UserData, 'name' > 
+
+export async function signUp(body: UserData) {
   const promise = axios.post(`${BASE_URL}/signup`, body);
+
+  return promise;
+}
+
+export async function signIn(body: AuthData) {
+  const promise = axios.post(`${BASE_URL}/signin`, body);
 
   return promise;
 }
