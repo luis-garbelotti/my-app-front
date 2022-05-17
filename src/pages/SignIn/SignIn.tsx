@@ -167,7 +167,7 @@ export default function SignIn() {
           }
 
           <Box component="div" onClick={() => navigate('/signup')} sx={style.login}>
-            Cadastre-se.
+            Cadastre-se
           </Box>
         </Form>
       </Container>
