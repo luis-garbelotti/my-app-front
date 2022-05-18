@@ -6,19 +6,19 @@ const style = {
   alignItems: 'center',
   justifyContent: 'center',
 
-  width: '120%',
+  width: '140%',
   height: '100vh',
   marginLeft: '-30px',
   backgroundColor: '#BF0000',
-  borderRadius: '0 15px 15px 0'
-}
+  borderRadius: '0 15px 15px 0',
+};
 
 function SideLogo() {
   return (
     <Box component="form" sx={style}>
       <Logo/>
     </Box>
-  )
+  );
 }
 
 export default SideLogo;

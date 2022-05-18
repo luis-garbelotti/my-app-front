@@ -1,5 +1,5 @@
-import Logo from '../Logo/Logo';
-import {Box} from '@mui/material';
+import { Box } from '@mui/material';
+import useAuth from '../../hooks/useAuth';
 
 const style = {
   display: 'flex',
@@ -8,16 +8,17 @@ const style = {
 
   width: '100%',
   height: '150px',
-  backgroundColor: '#BF0000',
-  borderRadius: '0 0 15px 15px'
-}
+};
 
 export default function Header() {
+  
+  const { auth } = useAuth();
+  
   return(
     <>
       <Box component="div" sx={style}>
-        <Logo />
+        Olá, {auth.name}!
       </Box>
     </>
-  )  
+  );
 }

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 
 const style = {
   display: 'flex',
   flexDirection: 'row',
   height: '100vh'
-}
+};
 
 interface Props {
   children: React.ReactNode
@@ -13,9 +13,9 @@ interface Props {
 
 export default function ContainerPages({ children }: Props) {
   return (
-    <Container sx={style}>
+    <Box component='div' sx={style}>
       {children}
-    </Container>
-  )
+    </Box>
+  );
 }
 

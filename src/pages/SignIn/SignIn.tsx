@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Form, Title, SideLogo } from '../../components/FormComponents/index';
 import { signIn } from '../../services/api';
 import { Box, Container, Button } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import MailIcon from '@mui/icons-material/Mail';
 import LockIcon from '@mui/icons-material/Lock';
 import ContainerPages from '../../components/ContainerPages/ContainerPages';
 import useAlert from '../../hooks/useAlert';
 import { AxiosError } from 'axios';
+import useAuth from '../../hooks/useAuth';
 
 const style = {
   container: {
@@ -65,7 +65,7 @@ const style = {
       cursor: 'pointer'
     }
   }
-}
+};
 
 interface FormData {
   email: '',
@@ -74,13 +74,20 @@ interface FormData {
 
 export default function SignIn() {
 
-  const { setMessage } = useAlert()
+  const { setMessage } = useAlert();
+  const { auth, login } = useAuth();
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
-  })
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth) {
+      navigate('/home');
+    }
+  }, []);
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -93,7 +100,7 @@ export default function SignIn() {
     if (!formData.password ||
         !formData.email
         ) {
-      setMessage({ type: 'warning', text: 'Preencha todos os campos corretamente.' })
+      setMessage({ type: 'warning', text: 'Preencha todos os campos corretamente.' });
       return;
     }
 
@@ -101,14 +108,15 @@ export default function SignIn() {
 
     setIsLoading(true);
     try {
-      await signIn({ password, email });
+      const response = await signIn({ password, email });
       setMessage({ type: 'success', text: 'Login efetuado com sucesso.' });
+      login(response.data);
       navigate('/home');
 
     } catch (error: AxiosError | Error | any) {
       setIsLoading(false);
-      setMessage({ type: 'error', text: error.response.data })
-      setFormData({ ...formData, password: ''})
+      setMessage({ type: 'error', text: error.response.data });
+      setFormData({ ...formData, password: ''});
     }
   }
 
@@ -172,9 +180,9 @@ export default function SignIn() {
         </Form>
       </Container>
     </ContainerPages>
-  )
+  );
 }
 
 export {
   SignIn
-}
+};
