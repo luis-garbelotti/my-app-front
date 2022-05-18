@@ -7,7 +7,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import MailIcon from '@mui/icons-material/Mail';
 import LockIcon from '@mui/icons-material/Lock';
-import ContainerPages from '../../components/ContainerPages/ContainerPages';
+import FormContainer from '../../components/FormComponents/FormContainer';
 import useAlert from '../../hooks/useAlert';
 import { AxiosError } from 'axios';
 
@@ -65,7 +65,7 @@ const style = {
       cursor: 'pointer'
     }
   }
-}
+};
 
 interface FormData {
   name: '',
@@ -76,13 +76,13 @@ interface FormData {
 
 export default function SignUp() {
 
-  const { setMessage } = useAlert() 
+  const { setMessage } = useAlert(); 
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     password: '',
     confirmPassword: ''
-  })
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -99,16 +99,16 @@ export default function SignUp() {
         !formData.confirmPassword || 
         !formData.name
       ) {
-      setMessage({type: 'warning', text: 'Preencha todos os campos corretamente.'})
-      return
+      setMessage({type: 'warning', text: 'Preencha todos os campos corretamente.'});
+      return;
     }
 
     const { name, email, password, confirmPassword } = formData;
     
     if (password !== confirmPassword) {
-      setMessage({type: 'warning', text: 'As senhas devem ser iguais.'})
+      setMessage({type: 'warning', text: 'As senhas devem ser iguais.'});
       setFormData({ ...formData, confirmPassword: '' });
-      return
+      return;
     }
     
     setIsLoading(true);
@@ -119,13 +119,13 @@ export default function SignUp() {
 
     } catch (error: AxiosError | Error | any) {
       setIsLoading(false);
-      setMessage({type: 'error', text: error.response.data})
-      setFormData({...formData, password: '', confirmPassword: ''})
+      setMessage({type: 'error', text: error.response.data});
+      setFormData({...formData, password: '', confirmPassword: ''});
     }
   }
 
   return (
-    <ContainerPages>
+    <FormContainer>
       <SideLogo />
       <Container sx={style.container}>
         <Title text="CADASTRO"></Title>
@@ -217,10 +217,10 @@ export default function SignUp() {
           </Box>
         </Form>
       </Container>
-    </ContainerPages>
-  )
+    </FormContainer>
+  );
 }
 
 export {
   SignUp
-}
+};

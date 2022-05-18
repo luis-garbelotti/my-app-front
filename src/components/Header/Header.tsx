@@ -2,22 +2,22 @@ import { Box } from '@mui/material';
 import useAuth from '../../hooks/useAuth';
 
 const style = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-
-  width: '100%',
-  height: '150px',
+  fontSize: '30px',
+  color: '#fff'
 };
 
-export default function Header() {
+interface Props {
+  children: React.ReactNode
+}
+
+export default function Header({ children }: Props) {
   
   const { auth } = useAuth();
   
   return(
     <>
-      <Box component="div" sx={style}>
-        Olá, {auth.name}!
+      <Box component="h1" sx={style}>
+        {children}
       </Box>
     </>
   );

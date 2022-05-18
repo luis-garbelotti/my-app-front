@@ -6,7 +6,7 @@ import { Box, Container, Button } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import MailIcon from '@mui/icons-material/Mail';
 import LockIcon from '@mui/icons-material/Lock';
-import ContainerPages from '../../components/ContainerPages/ContainerPages';
+import FormContainer from '../../components/FormComponents/FormContainer';
 import useAlert from '../../hooks/useAlert';
 import { AxiosError } from 'axios';
 import useAuth from '../../hooks/useAuth';
@@ -121,7 +121,7 @@ export default function SignIn() {
   }
 
   return (
-    <ContainerPages>
+    <FormContainer>
       <SideLogo />
       <Container sx={style.container}>
         <Title text="LOGIN"></Title>
@@ -179,7 +179,7 @@ export default function SignIn() {
           </Box>
         </Form>
       </Container>
-    </ContainerPages>
+    </FormContainer>
   );
 }
 
