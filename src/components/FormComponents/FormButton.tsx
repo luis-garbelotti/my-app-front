@@ -19,5 +19,5 @@ export default function FormButton({children, onCLick}: Props) {
       variant="contained"
     />
    
-  )
+  );
 }

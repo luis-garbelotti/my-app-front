@@ -14,15 +14,15 @@ body {
   font-family: 'Poppins';
 }
 
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 8px;               /* width of the entire scrollbar */
 }
 
-body::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: rgba(25, 25, 25, 0.95);      /* color of the tracking area */
 }
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background-color: #5d5d5d;    /* color of the scroll thumb */
   border-radius: 20px;       /* roundness of the scroll thumb */
 }

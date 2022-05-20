@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Input, Form, Title, SideLogo } from '../../components/FormComponents/index';
+import useAlert from '../../hooks/useAlert';
+import useAuth from '../../hooks/useAuth';
 import { signIn } from '../../services/api';
+import { AxiosError } from 'axios';
+import { Input, Form, Title, SideLogo } from '../../components/FormComponents/index';
+import FormContainer from '../../components/FormComponents/FormContainer';
 import { Box, Container, Button } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import MailIcon from '@mui/icons-material/Mail';
 import LockIcon from '@mui/icons-material/Lock';
-import FormContainer from '../../components/FormComponents/FormContainer';
-import useAlert from '../../hooks/useAlert';
-import { AxiosError } from 'axios';
-import useAuth from '../../hooks/useAuth';
 
 const style = {
   container: {
@@ -98,8 +98,8 @@ export default function SignIn() {
     setMessage(null);
 
     if (!formData.password ||
-        !formData.email
-        ) {
+      !formData.email
+    ) {
       setMessage({ type: 'warning', text: 'Preencha todos os campos corretamente.' });
       return;
     }
@@ -116,7 +116,7 @@ export default function SignIn() {
     } catch (error: AxiosError | Error | any) {
       setIsLoading(false);
       setMessage({ type: 'error', text: error.response.data });
-      setFormData({ ...formData, password: ''});
+      setFormData({ ...formData, password: '' });
     }
   }
 
