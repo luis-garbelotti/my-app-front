@@ -8,4 +8,4 @@ export {
   Input,
   Title,
   SideLogo,
-}
+};

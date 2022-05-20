@@ -8,6 +8,7 @@ import Alert from './components/Alert/Alert';
 import { AuthProvider } from './contexts/AuthContext';
 import Briefings from './pages/Briefings/Briefings';
 import { createTheme, ThemeProvider } from '@mui/material';
+import Add from './pages/Add/Add';
 
 function App() {
   const theme = createTheme({
@@ -16,23 +17,32 @@ function App() {
         'Poppins',
       ].join(',')
     },
+    palette: {
+      primary: {
+        main: '#BF0000',
+      },
+      secondary: {
+        main: '#fff',
+      },
+    },
   });
 
   return (
     <ThemeProvider theme={theme}>
-    <AuthProvider>
-      <AlertProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<SignIn />} />
-            <Route path='/signup' element={<SignUp />} />
-            <Route path='/home' element={<Home />}/>
-            <Route path='/briefings' element={<Briefings />}/>
-          </Routes>
-        </BrowserRouter>
-        <Alert />
-      </AlertProvider>
-    </AuthProvider>
+      <AuthProvider>
+        <AlertProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={<SignIn />} />
+              <Route path='/signup' element={<SignUp />} />
+              <Route path='/home' element={<Home />} />
+              <Route path='/briefings' element={<Briefings />} />
+              <Route path='/add' element={<Add />} />
+            </Routes>
+          </BrowserRouter>
+          <Alert />
+        </AlertProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

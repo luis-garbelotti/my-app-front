@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAlert from '../../hooks/useAlert';
+import { AxiosError } from 'axios';
+import FormContainer from '../../components/FormComponents/FormContainer';
 import { Input, Form, Title, SideLogo } from '../../components/FormComponents/index';
 import { signUp } from '../../services/api';
 import { Box, Container, Button } from '@mui/material';
@@ -7,40 +10,37 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import MailIcon from '@mui/icons-material/Mail';
 import LockIcon from '@mui/icons-material/Lock';
-import FormContainer from '../../components/FormComponents/FormContainer';
-import useAlert from '../../hooks/useAlert';
-import { AxiosError } from 'axios';
 
 const style = {
-  container: { 
-    display: 'flex', 
-    flexDirection: 'column', 
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
   },
   boxInputContainer: {
-    width: '100%', 
-    height: '45px', 
-    backgroundColor: '#fff', 
+    width: '100%',
+    height: '45px',
+    backgroundColor: '#fff',
     display: 'flex',
-    alignItems: 'center', 
-    justifyContent: 'space-beteween', 
-    paddingLeft: '10px', 
+    alignItems: 'center',
+    justifyContent: 'space-beteween',
+    paddingLeft: '10px',
     borderRadius: '10px'
   },
   boxIconContainer: {
-    width: '30px', 
-    height: '30px', 
+    width: '30px',
+    height: '30px',
     borderRadius: '5px',
-    backgroundColor: '#BF0000', 
+    backgroundColor: '#BF0000',
     display: 'flex',
-    alignItems: 'center', 
+    alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1
   },
-  icon: { 
-    color: '#fff', 
-    width: '15px' 
+  icon: {
+    color: '#fff',
+    width: '15px'
   },
   button: {
     display: 'flex',
@@ -53,7 +53,7 @@ const style = {
       backgroundColor: '#191919'
     }
   },
-  loadingButton: { 
+  loadingButton: {
     backgroundColor: 'rgba(25,25,25, 0.5)',
     width: '100%',
     borderRadius: '10px',
@@ -76,7 +76,7 @@ interface FormData {
 
 export default function SignUp() {
 
-  const { setMessage } = useAlert(); 
+  const { setMessage } = useAlert();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -94,33 +94,33 @@ export default function SignUp() {
     e.preventDefault();
     setMessage(null);
 
-    if (!formData.password || 
-        !formData.email || 
-        !formData.confirmPassword || 
-        !formData.name
-      ) {
-      setMessage({type: 'warning', text: 'Preencha todos os campos corretamente.'});
+    if (!formData.password ||
+      !formData.email ||
+      !formData.confirmPassword ||
+      !formData.name
+    ) {
+      setMessage({ type: 'warning', text: 'Preencha todos os campos corretamente.' });
       return;
     }
 
     const { name, email, password, confirmPassword } = formData;
-    
+
     if (password !== confirmPassword) {
-      setMessage({type: 'warning', text: 'As senhas devem ser iguais.'});
+      setMessage({ type: 'warning', text: 'As senhas devem ser iguais.' });
       setFormData({ ...formData, confirmPassword: '' });
       return;
     }
-    
+
     setIsLoading(true);
     try {
       await signUp({ name, password, email });
-      setMessage({type: 'success', text: 'Cadastro efetuado com sucesso.'});
+      setMessage({ type: 'success', text: 'Cadastro efetuado com sucesso.' });
       navigate('/');
 
     } catch (error: AxiosError | Error | any) {
       setIsLoading(false);
-      setMessage({type: 'error', text: error.response.data});
-      setFormData({...formData, password: '', confirmPassword: ''});
+      setMessage({ type: 'error', text: error.response.data });
+      setFormData({ ...formData, password: '', confirmPassword: '' });
     }
   }
 
@@ -130,13 +130,13 @@ export default function SignUp() {
       <Container sx={style.container}>
         <Title text="CADASTRO"></Title>
         <Form >
-          <Box 
-            component="div" 
+          <Box
+            component="div"
             sx={style.boxInputContainer}>
-            <Box 
+            <Box
               component="div"
               sx={style.boxIconContainer}>
-              <PersonRoundedIcon sx={style.icon}/>
+              <PersonRoundedIcon sx={style.icon} />
             </Box>
             <Input
               label="name"
@@ -147,13 +147,13 @@ export default function SignUp() {
             />
           </Box>
 
-          <Box 
-            component="div" 
+          <Box
+            component="div"
             sx={style.boxInputContainer}>
-            <Box 
+            <Box
               component="div"
               sx={style.boxIconContainer}>
-              <MailIcon sx={style.icon}/>
+              <MailIcon sx={style.icon} />
             </Box>
             <Input
               label="email"
@@ -198,19 +198,19 @@ export default function SignUp() {
             />
           </Box>
 
-            {!isLoading ?
-              <Button sx={style.button}
-                variant="contained"
-                onClick={handleSubmit}
+          {!isLoading ?
+            <Button sx={style.button}
+              variant="contained"
+              onClick={handleSubmit}
 
-              >
-                Cadastrar
-              </Button>
-              :
-              <LoadingButton loading variant="outlined" sx={style.loadingButton}>
-                Submit
-              </LoadingButton>
-            }
+            >
+              Cadastrar
+            </Button>
+            :
+            <LoadingButton loading variant="outlined" sx={style.loadingButton}>
+              Submit
+            </LoadingButton>
+          }
 
           <Box component="div" onClick={() => navigate('/')} sx={style.login}>
             Fazer login

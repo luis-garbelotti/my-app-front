@@ -8,7 +8,7 @@ const style = {
   color: '#fff',
   fontFamily: 'Poppins',
   fontWeigth: 'bold'
-}
+};
 
 interface Props {
   text: string
@@ -22,7 +22,7 @@ function Title({ text }: Props) {
     >
       {text}
     </Box>
-  )
+  );
 }
 
 export default Title;

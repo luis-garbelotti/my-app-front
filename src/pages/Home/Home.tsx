@@ -1,26 +1,22 @@
-import { Box, Container } from '@mui/material';
+import { useEffect, useState } from 'react';
+import useAuth from '../../hooks/useAuth';
+import AddButton from '../../components/AddComponents/AddButton';
+import PageContainer from '../../components/PageContainer/PageContainer';
+import PageContent from '../../components/PageContent/PageContent';
+import ResumeContainer from '../../components/ResumeContainer/ResumeContainer';
 import Header from '../../components/Header/Header';
 import Navbar from '../../components/Navbar/Navbar';
 import ProjectResume from '../../components/ProjectResume/ProjectResume';
-import useAuth from '../../hooks/useAuth';
+import { Box } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const styles = {
-  pageContainer: {
-    display: 'flex',
-    height: 'auto',
-  },
-  projectsContainer: {
-    width: '55%',
-    padding: '50px',
-    color: '#fff',
-    height: '100vh'
-  },
   title: {
     marginTop: '40px',
     fontSize: '22px'
@@ -30,7 +26,7 @@ const styles = {
     alignItems: 'center',
     marginTop: '15px',
     height: 'auto',
-    paddingRight: '40px'
+    paddingRight: '40px',
   },
   projectsInfosTitle: {
     width: '50%',
@@ -43,12 +39,12 @@ const styles = {
   },
   projectsInfosRemaining: {
     width: '30%',
-    paddingLeft: '15px', 
+    paddingLeft: '15px',
     display: 'flex',
     justifyContent: 'center',
   },
   accordion: {
-    bgcolor: '#343434', 
+    bgcolor: '#343434',
     color: '#fff',
     marginBottom: '10px',
     borderRadius: '5px'
@@ -56,21 +52,28 @@ const styles = {
 };
 
 export default function Home() {
-  
+
   const { auth } = useAuth();
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState<number | false>(false);
+
+  useEffect(() => {
+    if (!auth || !auth.token) {
+      navigate('/');
+    }
+  }, []);
 
   const handleChange =
     (panel: number) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
-  
-  return(
-    <Box component='div' sx={styles.pageContainer} >
+
+  return (
+    <PageContainer >
       <Navbar />
-      <Box component='div' sx={styles.projectsContainer} >
+      <PageContent >
         <Header>
-          Olá, {auth.name}! 
+          Olá, {auth.name}!
         </Header>
 
         <Box>
@@ -78,7 +81,7 @@ export default function Home() {
             Projetos
           </Box>
         </Box>
-        
+
         <Box component='div' sx={styles.projectsInfos} >
           <Box component='h4' sx={styles.projectsInfosTitle} >
             Título
@@ -91,16 +94,16 @@ export default function Home() {
           </Box>
         </Box>
 
-        <Box sx={{marginTop: '10px', height: '65vh', overflow: 'auto'}}>
+        <Box sx={{ marginTop: '10px', height: '65vh', overflow: 'auto' }}>
           <Accordion sx={styles.accordion} expanded={expanded === 1} onChange={handleChange(1)}>
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon sx={{color: '#BF0000', }}/>}
+              expandIcon={<ExpandMoreIcon sx={{ color: '#BF0000', }} />}
               aria-controls="panel1bh-content"
               id="panel1bh-header"
-              sx={{paddingLeft: 0, }}
+              sx={{ paddingLeft: 0, }}
             >
               <Box component='h4' sx={styles.projectsInfosTitle} >
-                Projeto Autoral 
+                Projeto Autoral
               </Box>
               <Box component='h4' sx={styles.projectsInfosLimit} >
                 24/05
@@ -109,18 +112,45 @@ export default function Home() {
                 30 dias
               </Box>
             </AccordionSummary>
-            <AccordionDetails sx={{ bgcolor: '#5D5D5D', borderRadius: '0 0 5px 5px'}}>
+            <AccordionDetails sx={{ bgcolor: '#5D5D5D', borderRadius: '0 0 5px 5px' }}>
               <Typography>
                 Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
                 Aliquam eget maximus est, id dignissim quam.
               </Typography>
             </AccordionDetails>
           </Accordion>
-          
+
+          <Accordion sx={styles.accordion} expanded={expanded === 1} onChange={handleChange(1)}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon sx={{ color: '#BF0000', }} />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+              sx={{ paddingLeft: 0, }}
+            >
+              <Box component='h4' sx={styles.projectsInfosTitle} >
+                Projeto Autoral
+              </Box>
+              <Box component='h4' sx={styles.projectsInfosLimit} >
+                24/05
+              </Box>
+              <Box component='h4' sx={styles.projectsInfosRemaining} >
+                30 dias
+              </Box>
+            </AccordionSummary>
+            <AccordionDetails sx={{ bgcolor: '#5D5D5D', borderRadius: '0 0 5px 5px' }}>
+              <Typography>
+                Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
+                Aliquam eget maximus est, id dignissim quam.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
 
         </Box>
-      </Box>
-      <ProjectResume />
-    </Box>
-    );
+      </PageContent>
+      <ResumeContainer>
+        <ProjectResume />
+        <AddButton />
+      </ResumeContainer>
+    </PageContainer>
+  );
 }
