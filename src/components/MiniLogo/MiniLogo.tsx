@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import logo from '../../assets/logo1.png';
 
 const style = {
   display: 'flex',
@@ -16,7 +17,10 @@ const style = {
 export default function MiniLogo() {
   return (
     <Box component="div" sx={style}>
-        Duduck
+      <img
+        src={logo}
+        width='70%'
+      />
     </Box>
   );
 }

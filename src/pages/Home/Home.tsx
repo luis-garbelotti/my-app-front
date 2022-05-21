@@ -120,7 +120,7 @@ export default function Home() {
             </AccordionDetails>
           </Accordion>
 
-          <Accordion sx={styles.accordion} expanded={expanded === 1} onChange={handleChange(1)}>
+          <Accordion sx={styles.accordion} expanded={expanded === 2} onChange={handleChange(2)}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon sx={{ color: '#BF0000', }} />}
               aria-controls="panel1bh-content"

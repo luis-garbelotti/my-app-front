@@ -39,11 +39,12 @@ const styles = {
 export default function NavBar() {
 
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, setAuth } = useAuth();
 
   function handleLogout() {
-    logout();
     navigate('/');
+    setAuth(null);
+    logout();
   }
 
   return (
