@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { ClientData, ProjectData } from '../pages/Add/Add';
 
 const BASE_URL = 'http://localhost:5000';
 
@@ -11,34 +10,91 @@ function createConfig(token: string): any {
   };
 }
 
-interface UserData {
-  name: string,
-  email: string,
-  password: string
+export interface FormDataLogin {
+  email: string;
+  password: string;
+}
+export interface FormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
 }
 
-type AuthData = Omit<UserData, 'name'>
+export interface UserData {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+}
 
-export async function signUp(body: UserData) {
+export interface ProjectData {
+  title: string;
+  resume: string;
+  importantInfos: string;
+  startDate: string;
+  limitDate: string;
+  clientId: number;
+}
+
+export interface ClientData {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+}
+
+export type TabValue = 'Projeto' | 'Cliente';
+
+export type AuthData = Omit<UserData, 'name' | 'id'>
+
+export type SignUpData = Omit<UserData, 'id'>
+
+export type ClientRegisterData = Omit<ClientData, 'id'>
+
+async function signUp(body: SignUpData) {
   const promise = axios.post(`${BASE_URL}/signup`, body);
 
   return promise;
 }
 
-export async function signIn(body: AuthData) {
+async function signIn(body: AuthData) {
   const promise = axios.post(`${BASE_URL}/signin`, body);
 
   return promise;
 }
 
-export async function createNewProject(body: ProjectData, token: string) {
-  const promise = axios.post(`${BASE_URL}/project/add`, body, createConfig(token));
+async function createNewProject(body: ProjectData, token: string, userId: string) {
+  const promise = axios.post(`${BASE_URL}/users/${userId}/project`, body, createConfig(token));
 
   return promise;
 }
 
-export async function createNewClient(body: ClientData, token: string) {
-  const promise = axios.post(`${BASE_URL}/client/add`, body, createConfig(token));
+async function createNewClient(body: ClientRegisterData, token: string, userId: string) {
+  const promise = axios.post(`${BASE_URL}/users/${userId}/client`, body, createConfig(token));
 
   return promise;
 }
+
+async function getClients(token: string, userId: number) {
+  const promise = axios.get(`${BASE_URL}/users/${userId}/clients`, createConfig(token));
+
+  return promise;
+}
+
+async function getProject(token: string, userId: number) {
+  const promise = axios.get(`${BASE_URL}/users/${userId}/projects`, createConfig(token));
+
+  return promise;
+}
+
+const api = {
+  signUp,
+  signIn,
+  createNewProject,
+  getClients,
+  createNewClient,
+  getProject
+};
+
+export default api;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAlert from '../../hooks/useAlert';
 import useAuth from '../../hooks/useAuth';
-import { signIn } from '../../services/api';
+import api, { FormDataLogin } from '../../services/api';
 import { AxiosError } from 'axios';
 import { Input, Form, Title, SideLogo } from '../../components/FormComponents/index';
 import FormContainer from '../../components/FormComponents/FormContainer';
@@ -67,16 +67,11 @@ const style = {
   }
 };
 
-interface FormData {
-  email: '',
-  password: '',
-}
-
 export default function SignIn() {
 
   const { setMessage } = useAlert();
   const { auth, login } = useAuth();
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<FormDataLogin>({
     email: '',
     password: '',
   });
@@ -108,7 +103,7 @@ export default function SignIn() {
 
     setIsLoading(true);
     try {
-      const response = await signIn({ password, email });
+      const response = await api.signIn({ password, email });
       setMessage({ type: 'success', text: 'Login efetuado com sucesso.' });
       login(response.data);
       navigate('/home');

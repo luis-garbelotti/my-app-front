@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useAlert from '../../hooks/useAlert';
 import { AxiosError } from 'axios';
-import { createNewClient, createNewProject } from '../../services/api';
+import api, {  ClientRegisterData, ProjectData, TabValue } from '../../services/api';
+import dayjs from 'dayjs';
 import AddButton from '../../components/AddComponents/AddButton';
 import Header from '../../components/Header/Header';
 import NavBar from '../../components/Navbar/Navbar';
@@ -16,7 +17,6 @@ import AddInput from '../../components/AddComponents/AddInput';
 import AddSubmitButton from '../../components/AddComponents/AddSubmitButton';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
@@ -49,30 +49,14 @@ const styles = {
   },
 };
 
-export interface ProjectData {
-  title: string;
-  resume: string;
-  importantInfos: string;
-  startDate: string;
-  limitDate: string;
-  clientId: number;
-}
-
-export interface ClientData {
-  name: string;
-  email: string;
-  phone: string;
-}
-
-type TabValue = 'Projeto' | 'Cliente';
-
 export default function AddProject() {
 
   const { auth } = useAuth();
   const { setMessage } = useAlert();
   const navigate = useNavigate();
+  const [allClients, setAllClients] = useState<any[]>();
   const [tabValue, setTabValue] = useState<TabValue>('Projeto');
-  const [client, setClient] = useState('');
+  const [selectedClient, setSelectedClient] = useState<string>('');
   const [projectData, setProjectData] = useState<ProjectData>({
     title: '',
     resume: '',
@@ -81,7 +65,7 @@ export default function AddProject() {
     limitDate: '',
     clientId: 0,
   });
-  const [clientData, setCLientData] = useState<ClientData>({
+  const [clientData, setCLientData] = useState<ClientRegisterData>({
     name: '',
     email: '',
     phone: '',
@@ -91,6 +75,14 @@ export default function AddProject() {
     if (!auth || !auth.token) {
       navigate('/');
     }
+
+      const promise = api.getClients(auth.token, auth.id)
+      promise.then((response) => {
+        setAllClients(response.data);
+      })
+      .catch((error) => {
+        setMessage({ type: 'error', text: 'Algo deu errado na busca de clientes. Tente novamente!' });
+      });
   }, []);
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -102,7 +94,7 @@ export default function AddProject() {
   };
 
   const handleClientChange = (event: SelectChangeEvent) => {
-    setClient(event.target.value as string);
+    setSelectedClient(event.target.value as string);
     setProjectData({ ...projectData, clientId: parseInt(event.target.value) });
   };
 
@@ -122,11 +114,11 @@ export default function AddProject() {
     if (!title || !resume || !importantInfos || !startDate || !limitDate || !clientId) {
       setMessage({ type: 'warning', text: 'Preencha todos os campos.' });
     }
-
+    
     try {
-      await createNewProject(projectData, auth.token);
+      await api.createNewProject(projectData, auth.token, auth.id);
       setMessage({ type: 'success', text: 'Projeto cadastrado com sucesso!' });
-
+      navigate('/home');
     } catch (error: AxiosError | Error | any) {
       setMessage({ type: 'error', text: 'Algo deu errado. Tente novamente!' });
     }
@@ -147,9 +139,9 @@ export default function AddProject() {
     }
 
     try {
-      await createNewClient(clientData, auth.token);
-      setMessage({ type: 'success', text: 'Projeto cadastrado com sucesso!' });
-
+      await api.createNewClient(clientData, auth.token, auth.id);
+      setMessage({ type: 'success', text: 'Cliente cadastrado com sucesso!' });
+      navigate('/home');
     } catch (error: AxiosError | Error | any) {
       setMessage({ type: 'error', text: 'Algo deu errado. Tente novamente!' });
     }
@@ -239,22 +231,22 @@ export default function AddProject() {
                     <Select
                       labelId="client-select"
                       id="client-select"
-                      value={client}
+                      value={selectedClient}
                       label="client"
                       name="clientId"
                       onChange={handleClientChange}
                       sx={styles.clientSelect}
                     >
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>t</MenuItem>
-                      <MenuItem value={30}>Ten</MenuItem>
-                      <MenuItem value={40}>Ten</MenuItem>
+                      {allClients?.map((client) =>
+                        <MenuItem key={client.id} value={client.client.id} >{client.client.name}</MenuItem>
+                      )}
                     </Select>
                   </FormControl>
                 </Box>
                 <AddSubmitButton onClick={handleProjectSubmit} />
               </Box>
             </TabPanel>
+
             <TabPanel value='Cliente' >
               <Box component='div' sx={styles.container}>
                 <AddText>
@@ -282,7 +274,7 @@ export default function AddProject() {
                   name="phone"
                   value={clientData.phone}
                   onChange={handleClientInputChange}
-                  type='text'
+                  type='tel'
                 />
                 <AddSubmitButton onClick={handleClientSubmit} />
               </Box>

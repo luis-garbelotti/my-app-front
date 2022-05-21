@@ -4,7 +4,7 @@ import useAlert from '../../hooks/useAlert';
 import { AxiosError } from 'axios';
 import FormContainer from '../../components/FormComponents/FormContainer';
 import { Input, Form, Title, SideLogo } from '../../components/FormComponents/index';
-import { signUp } from '../../services/api';
+import api, { FormData } from '../../services/api';
 import { Box, Container, Button } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
@@ -67,13 +67,6 @@ const style = {
   }
 };
 
-interface FormData {
-  name: '',
-  email: '',
-  password: '',
-  confirmPassword: ''
-}
-
 export default function SignUp() {
 
   const { setMessage } = useAlert();
@@ -113,7 +106,7 @@ export default function SignUp() {
 
     setIsLoading(true);
     try {
-      await signUp({ name, password, email });
+      await api.signUp({ name, password, email });
       setMessage({ type: 'success', text: 'Cadastro efetuado com sucesso.' });
       navigate('/');
 
