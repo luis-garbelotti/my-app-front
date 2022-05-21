@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useAlert from '../../hooks/useAlert';
 import { AxiosError } from 'axios';
-import api, {  ClientRegisterData, ProjectData, TabValue } from '../../services/api';
+import api, {  ClientRegisterData, ProjectLoginData, TabValue } from '../../services/api';
 import dayjs from 'dayjs';
 import AddButton from '../../components/AddComponents/AddButton';
 import Header from '../../components/Header/Header';
@@ -57,7 +57,7 @@ export default function AddProject() {
   const [allClients, setAllClients] = useState<any[]>();
   const [tabValue, setTabValue] = useState<TabValue>('Projeto');
   const [selectedClient, setSelectedClient] = useState<string>('');
-  const [projectData, setProjectData] = useState<ProjectData>({
+  const [projectData, setProjectData] = useState<ProjectLoginData>({
     title: '',
     resume: '',
     importantInfos: '',
@@ -155,7 +155,7 @@ export default function AddProject() {
           Cadastrar
         </Header>
 
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', mt: '-40px' }}>
           <TabContext value={tabValue}>
             <Tabs
               value={tabValue}

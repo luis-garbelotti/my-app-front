@@ -3,7 +3,8 @@ import useAuth from '../../hooks/useAuth';
 
 const style = {
   fontSize: '30px',
-  color: '#fff'
+  color: '#fff',
+  mb: '40px',
 };
 
 interface Props {
