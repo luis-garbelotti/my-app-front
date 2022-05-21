@@ -82,12 +82,19 @@ async function getClients(token: string, userId: number) {
   return promise;
 }
 
+async function getProject(token: string, userId: number) {
+  const promise = axios.get(`${BASE_URL}/users/${userId}/projects`, createConfig(token));
+
+  return promise;
+}
+
 const api = {
   signUp,
   signIn,
   createNewProject,
   getClients,
   createNewClient,
+  getProject
 };
 
 export default api;

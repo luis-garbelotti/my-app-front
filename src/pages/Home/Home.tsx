@@ -14,6 +14,9 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from 'react-router-dom';
+import api from '../../services/api';
+import useAlert from '../../hooks/useAlert';
+import dayjs from 'dayjs';
 
 
 const styles = {
@@ -49,18 +52,34 @@ const styles = {
     marginBottom: '10px',
     borderRadius: '5px'
   },
+  noProjects: {
+    marginTop: '40px',
+    fontSize: '18px',
+    color: '#5d5d5d'
+  }
 };
 
 export default function Home() {
 
   const { auth } = useAuth();
+  const { setMessage } = useAlert();
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState<number | false>(false);
+  const [projects, setProjects] = useState<any[] | null>(null);
 
   useEffect(() => {
     if (!auth || !auth.token) {
       navigate('/');
     }
+
+    const promise = api.getProject(auth.token, auth.id);
+    promise.then((response) => {
+      setProjects(response.data);
+    })
+    .catch((error) => {
+      setMessage({ type: 'error', text: 'Algo deu errado na busca de projetos. Tente novamente!' });
+      
+    });
   }, []);
 
   const handleChange =
@@ -76,81 +95,68 @@ export default function Home() {
           Olá, {auth.name}!
         </Header>
 
-        <Box>
-          <Box component='h2' sx={styles.title} >
-            Projetos
+        { projects?.length === 0 ? 
+          <Box component='h2' sx={styles.noProjects} >
+            Nenhum projeto cadastrado.
           </Box>
-        </Box>
-
-        <Box component='div' sx={styles.projectsInfos} >
-          <Box component='h4' sx={styles.projectsInfosTitle} >
-            Título
-          </Box>
-          <Box component='h4' sx={styles.projectsInfosLimit} >
-            Entrega
-          </Box>
-          <Box component='h4' sx={styles.projectsInfosRemaining} >
-            Dias restantes
-          </Box>
-        </Box>
-
-        <Box sx={{ marginTop: '10px', height: '65vh', overflow: 'auto' }}>
-          <Accordion sx={styles.accordion} expanded={expanded === 1} onChange={handleChange(1)}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon sx={{ color: '#BF0000', }} />}
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
-              sx={{ paddingLeft: 0, }}
-            >
+          :
+          <>
+            <Box>
+              <Box component='h2' sx={styles.title} >
+                Projetos
+              </Box>
+            </Box>
+            <Box component='div' sx={styles.projectsInfos} >
               <Box component='h4' sx={styles.projectsInfosTitle} >
-                Projeto Autoral
+                Título
               </Box>
               <Box component='h4' sx={styles.projectsInfosLimit} >
-                24/05
+                Entrega
               </Box>
               <Box component='h4' sx={styles.projectsInfosRemaining} >
-                30 dias
+                Dias restantes
               </Box>
-            </AccordionSummary>
-            <AccordionDetails sx={{ bgcolor: '#5D5D5D', borderRadius: '0 0 5px 5px' }}>
-              <Typography>
-                Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-                Aliquam eget maximus est, id dignissim quam.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
+            </Box>
 
-          <Accordion sx={styles.accordion} expanded={expanded === 2} onChange={handleChange(2)}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon sx={{ color: '#BF0000', }} />}
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
-              sx={{ paddingLeft: 0, }}
-            >
-              <Box component='h4' sx={styles.projectsInfosTitle} >
-                Projeto Autoral
-              </Box>
-              <Box component='h4' sx={styles.projectsInfosLimit} >
-                24/05
-              </Box>
-              <Box component='h4' sx={styles.projectsInfosRemaining} >
-                30 dias
-              </Box>
-            </AccordionSummary>
-            <AccordionDetails sx={{ bgcolor: '#5D5D5D', borderRadius: '0 0 5px 5px' }}>
-              <Typography>
-                Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-                Aliquam eget maximus est, id dignissim quam.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-
-        </Box>
+            <Box sx={{ marginTop: '10px', height: '65vh', overflow: 'auto' }}>
+              {projects?.map((p) => 
+                <Accordion key={p.project.id} sx={styles.accordion} expanded={expanded === p.project.id} onChange={handleChange(p.project.id)}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon sx={{ color: '#BF0000', }} />}
+                    aria-controls="panel1bh-content"
+                    id="panel1bh-header"
+                    sx={{ paddingLeft: 0, }}
+                  >
+                    <Box component='h4' sx={styles.projectsInfosTitle} >
+                      {p.project.title}
+                    </Box>
+                    <Box component='h4' sx={styles.projectsInfosLimit} >
+                      {dayjs(p.project.limitDate).format('DD/MM')}
+                    </Box>
+                    <Box component='h4' sx={styles.projectsInfosRemaining} >
+                      {dayjs(p.project.limitDate).diff(new Date(), 'day') === 0 ? <Typography sx={{ color: '#bf8900', fontWeight: 700 }}>Entrega hoje!</Typography> : 
+                        dayjs(p.project.limitDate).diff(new Date(), 'day') < 0 ? <Typography sx={{color: '#BF0000', fontWeight: 700}}>Atrasado!</Typography> :
+                          dayjs(p.project.limitDate).diff(new Date(), 'day') > 0 ? dayjs(p.project.limitDate).diff(new Date(), 'day') : ''
+                      }
+                    </Box>
+                  </AccordionSummary>
+                  <AccordionDetails sx={{ bgcolor: '#5D5D5D', borderRadius: '0 0 5px 5px' }}>
+                    <Typography>
+                      {p.project.resume}
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
+              )}
+            </Box>
+          </>
+        }
       </PageContent>
+
       <ResumeContainer>
         <ProjectResume />
         <AddButton />
       </ResumeContainer>
+
     </PageContainer>
   );
 }
