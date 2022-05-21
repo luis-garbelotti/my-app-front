@@ -13,6 +13,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import useAlert from '../../hooks/useAlert';
@@ -21,7 +22,6 @@ import dayjs from 'dayjs';
 
 const styles = {
   title: {
-    marginTop: '40px',
     fontSize: '22px'
   },
   projectsInfos: {
@@ -30,10 +30,13 @@ const styles = {
     marginTop: '15px',
     height: 'auto',
     paddingRight: '40px',
+    pl: '40px',
   },
   projectsInfosTitle: {
     width: '50%',
     paddingLeft: '17px',
+    display: 'flex',
+    justifyContent: 'space-between'
   },
   projectsInfosLimit: {
     width: '20%',
@@ -50,7 +53,7 @@ const styles = {
     bgcolor: '#343434',
     color: '#fff',
     marginBottom: '10px',
-    borderRadius: '5px'
+    borderRadius: '5px',
   },
   noProjects: {
     marginTop: '40px',
@@ -103,7 +106,7 @@ export default function Home() {
           <>
             <Box>
               <Box component='h2' sx={styles.title} >
-                Projetos
+                Seus projetos
               </Box>
             </Box>
             <Box component='div' sx={styles.projectsInfos} >
@@ -120,32 +123,53 @@ export default function Home() {
 
             <Box sx={{ marginTop: '10px', height: '65vh', overflow: 'auto' }}>
               {projects?.map((p) => 
-                <Accordion key={p.project.id} sx={styles.accordion} expanded={expanded === p.project.id} onChange={handleChange(p.project.id)}>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon sx={{ color: '#BF0000', }} />}
-                    aria-controls="panel1bh-content"
-                    id="panel1bh-header"
-                    sx={{ paddingLeft: 0, }}
-                  >
-                    <Box component='h4' sx={styles.projectsInfosTitle} >
-                      {p.project.title}
-                    </Box>
-                    <Box component='h4' sx={styles.projectsInfosLimit} >
-                      {dayjs(p.project.limitDate).format('DD/MM')}
-                    </Box>
-                    <Box component='h4' sx={styles.projectsInfosRemaining} >
-                      {dayjs(p.project.limitDate).diff(new Date(), 'day') === 0 ? <Typography sx={{ color: '#bf8900', fontWeight: 700 }}>Entrega hoje!</Typography> : 
-                        dayjs(p.project.limitDate).diff(new Date(), 'day') < 0 ? <Typography sx={{color: '#BF0000', fontWeight: 700}}>Atrasado!</Typography> :
-                          dayjs(p.project.limitDate).diff(new Date(), 'day') > 0 ? dayjs(p.project.limitDate).diff(new Date(), 'day') : ''
-                      }
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails sx={{ bgcolor: '#5D5D5D', borderRadius: '0 0 5px 5px' }}>
-                    <Typography>
-                      {p.project.resume}
-                    </Typography>
-                  </AccordionDetails>
-                </Accordion>
+                <>
+                  <Accordion key={p.project.id} sx={styles.accordion} expanded={expanded === p.project.id} onChange={handleChange(p.project.id)}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon sx={{ color: '#BF0000', }} />}
+                      aria-controls="panel1bh-content"
+                      id="panel1bh-header"
+                      sx={{ paddingLeft: 0, }}
+                    >
+                      <Box component='div' sx={{pl: '15px'}} onClick={() => navigate(`/project/${p.project.id}`)}>
+                        <VisibilityIcon  />
+                      </Box>
+                      <Box component='h4' sx={styles.projectsInfosTitle} >
+                        {p.project.title}
+                      </Box>
+                      <Box component='h4' sx={styles.projectsInfosLimit} >
+                        {dayjs(p.project.limitDate).format('DD/MM')}
+                      </Box>
+                      <Box component='h4' sx={styles.projectsInfosRemaining} >
+                        { 
+                          dayjs(p.project.limitDate).diff(new Date(), 'day') > 0 ? 
+                            <Typography sx={{ color: '#fff', fontWeight: 700 }}>
+                              {dayjs(p.project.limitDate).diff(new Date(), 'day') + 1} dia(s)!
+                            </Typography> :
+                          dayjs(p.project.limitDate).diff(new Date(), 'day') < 0 ? 
+                            <Typography sx={{color: '#BF0000', fontWeight: 700}}>
+                              {dayjs(p.project.limitDate).diff(new Date(), 'day') * -1} dia(s) atrasado!
+                            </Typography> :
+                          dayjs(p.project.limitDate).format('DD/MM/YYYY') === dayjs(new Date).format('DD/MM/YYYY') ? 
+                            <Typography sx={{ color: '#fff', fontWeight: 700 }}>
+                                    Entrega hoje!
+                            </Typography> : 
+                          dayjs(p.project.limitDate).diff(new Date(), 'day') === 0 ? 
+                            <Typography sx={{ color: '#fff', fontWeight: 700 }}>
+                                    Entrega amanhã!
+                            </Typography> : 
+                          ''
+                        }
+                      </Box>
+                    </AccordionSummary>
+
+                    <AccordionDetails sx={{ bgcolor: '#5D5D5D', borderRadius: '0 0 5px 5px' }}>
+                      <Typography>
+                        {p.project.resume}
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                </>
               )}
             </Box>
           </>

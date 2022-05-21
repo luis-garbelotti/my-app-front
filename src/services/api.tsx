@@ -29,12 +29,24 @@ export interface UserData {
 }
 
 export interface ProjectData {
+  id: number
   title: string;
   resume: string;
   importantInfos: string;
   startDate: string;
   limitDate: string;
   clientId: number;
+}
+
+export interface ProjectClientData {
+  id: number
+  title: string;
+  resume: string;
+  importantInfos: string;
+  startDate: string;
+  limitDate: string;
+  clientId: number;
+  client: ClientData
 }
 
 export interface ClientData {
@@ -50,6 +62,8 @@ export type AuthData = Omit<UserData, 'name' | 'id'>
 
 export type SignUpData = Omit<UserData, 'id'>
 
+export type ProjectLoginData = Omit<ProjectData, 'id'>
+
 export type ClientRegisterData = Omit<ClientData, 'id'>
 
 async function signUp(body: SignUpData) {
@@ -64,7 +78,7 @@ async function signIn(body: AuthData) {
   return promise;
 }
 
-async function createNewProject(body: ProjectData, token: string, userId: string) {
+async function createNewProject(body: ProjectLoginData, token: string, userId: string) {
   const promise = axios.post(`${BASE_URL}/users/${userId}/project`, body, createConfig(token));
 
   return promise;
@@ -88,13 +102,20 @@ async function getProject(token: string, userId: number) {
   return promise;
 }
 
+async function getProjectById(token: string, projectId: string | undefined, userId: number) {
+  const promise = axios.get(`${BASE_URL}/users/${userId}/projects/${projectId}`, createConfig(token));
+
+  return promise;
+}
+
 const api = {
   signUp,
   signIn,
   createNewProject,
   getClients,
   createNewClient,
-  getProject
+  getProject,
+  getProjectById
 };
 
 export default api;

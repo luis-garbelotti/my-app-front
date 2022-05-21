@@ -9,6 +9,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Briefings from './pages/Briefings/Briefings';
 import { createTheme, ThemeProvider } from '@mui/material';
 import Add from './pages/Add/Add';
+import Project from './pages/Project/Project';
 
 function App() {
   const theme = createTheme({
@@ -36,6 +37,7 @@ function App() {
               <Route path='/' element={<SignIn />} />
               <Route path='/signup' element={<SignUp />} />
               <Route path='/home' element={<Home />} />
+              <Route path='/project/:projectId' element={<Project />} />
               <Route path='/briefings' element={<Briefings />} />
               <Route path='/add' element={<Add />} />
             </Routes>
