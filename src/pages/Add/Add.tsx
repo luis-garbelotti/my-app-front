@@ -4,7 +4,6 @@ import useAuth from '../../hooks/useAuth';
 import useAlert from '../../hooks/useAlert';
 import { AxiosError } from 'axios';
 import api, {  ClientRegisterData, ProjectLoginData, TabValue } from '../../services/api';
-import dayjs from 'dayjs';
 import AddButton from '../../components/AddComponents/AddButton';
 import Header from '../../components/Header/Header';
 import NavBar from '../../components/Navbar/Navbar';
@@ -81,7 +80,7 @@ export default function AddProject() {
         setAllClients(response.data);
       })
       .catch((error) => {
-        setMessage({ type: 'error', text: 'Algo deu errado na busca de clientes. Tente novamente!' });
+        setMessage({ type: 'error', text: error.response.data });
       });
   }, []);
 
@@ -113,6 +112,7 @@ export default function AddProject() {
 
     if (!title || !resume || !importantInfos || !startDate || !limitDate || !clientId) {
       setMessage({ type: 'warning', text: 'Preencha todos os campos.' });
+      return;
     }
     
     try {
@@ -120,7 +120,7 @@ export default function AddProject() {
       setMessage({ type: 'success', text: 'Projeto cadastrado com sucesso!' });
       navigate('/home');
     } catch (error: AxiosError | Error | any) {
-      setMessage({ type: 'error', text: 'Algo deu errado. Tente novamente!' });
+      setMessage({ type: 'error', text: error.response.data });
     }
 
   }
