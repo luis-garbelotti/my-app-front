@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import useAlert from '../../hooks/useAlert';
 import { AxiosError } from 'axios';
-import api, {  ClientRegisterData, ProjectLoginData, TabValue } from '../../services/api';
+import api, {  ClientRegisterData, ProjectSendData, TabValue } from '../../services/api';
 import AddButton from '../../components/AddComponents/AddButton';
 import Header from '../../components/Header/Header';
 import NavBar from '../../components/Navbar/Navbar';
@@ -20,6 +20,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { valueToPercent } from '@mui/base';
 
 const styles = {
   container: {
@@ -56,13 +57,14 @@ export default function AddProject() {
   const [allClients, setAllClients] = useState<any[]>();
   const [tabValue, setTabValue] = useState<TabValue>('Projeto');
   const [selectedClient, setSelectedClient] = useState<string>('');
-  const [projectData, setProjectData] = useState<ProjectLoginData>({
+  const [projectData, setProjectData] = useState<ProjectSendData>({
     title: '',
     resume: '',
     importantInfos: '',
     startDate: '',
     limitDate: '',
     clientId: 0,
+    value: 0,
   });
   const [clientData, setCLientData] = useState<ClientRegisterData>({
     name: '',
@@ -86,6 +88,7 @@ export default function AddProject() {
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
+    
   }
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: TabValue) => {
@@ -176,6 +179,15 @@ export default function AddProject() {
                 <AddInput
                   name="title"
                   value={projectData.title}
+                  onChange={handleInputChange}
+                  type='text'
+                />
+                <AddText>
+                  Valor
+                </AddText>
+                <AddInput
+                  name="value"
+                  value={projectData.value}
                   onChange={handleInputChange}
                   type='text'
                 />

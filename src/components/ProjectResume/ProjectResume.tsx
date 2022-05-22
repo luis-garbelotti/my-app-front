@@ -1,4 +1,9 @@
+import { Calculate } from '@mui/icons-material';
 import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
+import useAlert from '../../hooks/useAlert';
+import useAuth from '../../hooks/useAuth';
+import api from '../../services/api';
 
 const styles = {
   container: {
@@ -33,6 +38,39 @@ const styles = {
 
 export default function ProjectResume() {
 
+  const { auth } = useAuth();
+  const [projects, setProjects] = useState<any[] | null>();
+  const [inWork, setInWork] = useState<number>();
+  const [isFinished, setIsFinished] = useState<number>();
+  const { setMessage } = useAlert();
+
+  useEffect(() => {
+
+    const promise = api.getProject(auth.token, auth.id);
+    promise.then((response) => {
+      setProjects(response.data);
+      calcProjects(response.data);
+    })
+      .catch((error) => {
+        setMessage({ type: 'error', text: error.response.data });
+      });
+  }, []);
+
+  function calcProjects(projects: any[] | null) {
+    if(!projects) {
+      return;
+    }
+    const done = projects.filter(function (el)  {
+      return el.project.isDone === true;
+    });
+    setIsFinished(done.length);
+
+    const working = projects.filter(function (el) {
+      return el.project.isDone === false;
+    });
+    setInWork(working.length);
+  }
+
   return(
     <Box component='div' sx={styles.container}>
 
@@ -40,17 +78,23 @@ export default function ProjectResume() {
 
       <Box component='div' sx={styles.content} >
         <Box component='div' sx={styles.infos}>
-          <Box component='h1'>10</Box>
+          <Box component='h1'>
+            {inWork}
+          </Box>
           <Box component='h6' sx={{fontSize: '9px'}}>Em andamento</Box>
         </Box>
 
         <Box component='div' sx={styles.infos}>
-          <Box component='h1'>20</Box>
+          <Box component='h1'>
+            {isFinished}
+          </Box>
           <Box component='h6' sx={{fontSize: '9px'}}>Concluídos</Box>
         </Box>
 
         <Box component='div' sx={styles.infos}>
-          <Box component='h1'>30</Box>
+          <Box component='h1'>
+            {projects?.length}
+          </Box>
           <Box component='h6' sx={{fontSize: '9px'}}>Total</Box>
         </Box>
       </Box>

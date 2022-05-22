@@ -14,7 +14,7 @@ import useAlert from '../../hooks/useAlert';
 import useAuth from '../../hooks/useAuth';
 import api, { ProjectClientData } from '../../services/api';
 import dayjs from 'dayjs';
-import BriefingButton from '../../components/ProjectPage/BriefingButton';
+import PageButton from '../../components/ProjectPage/PageButton';
 
 export default function Project() {
 
@@ -32,11 +32,23 @@ export default function Project() {
     api.getProjectById(auth.token, projectId, auth.id)
     .then((response) => {
       setProjectData(response.data);
+      console.log(response.data);
     })
     .catch((error) => {
       setMessage({ type: 'error', text: error.response.data });
     });
   }, []);
+  
+  function handleFinishProject() {
+    api.finishProject(auth.token, projectId, auth.id)
+    .then(() => {
+      setMessage({ type: 'success', text: 'Projeto finalizado!' });
+      navigate('/home');
+    })
+    .catch((error) => {
+      setMessage({ type: 'success', text: error.response.data });
+    });
+  }
 
   return (
     <PageContainer >
@@ -45,7 +57,10 @@ export default function Project() {
         { !projectData ? '' :
         <>
           <Header>
-            {projectData.title}
+              {projectData.title}
+          <Box component='h5' sx={{fontStyle: 'italic', fontSize: '12px', pt: '5px'}}>
+              {!projectData.isDone ? <p>Em andamento</p> : <p>Concluído</p> }
+          </Box>
           </Header>
           <Box component='div' sx={{pr: '20%', height: '70vh', overflow: 'auto'}}>
           <AddText >
@@ -107,7 +122,17 @@ export default function Project() {
               <TextInfo>
                 {projectData.client.phone}
               </TextInfo>
-            <BriefingButton onClick={() => navigate(`/projects/${projectId}/briefing`)}/>
+              <Box component='div' sx={{display: 'flex', justifyContent: 'space-between'}}>
+                <PageButton onClick={() => navigate(`/projects/${projectId}/briefing`)}>
+                  Briefing
+                </PageButton>
+                {!projectData.isDone ? 
+                <PageButton onClick={handleFinishProject}>
+                  Concluir
+                </PageButton>
+                : ''
+                }
+              </Box>
             </Box>
         </>
         }

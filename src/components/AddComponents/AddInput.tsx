@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 interface Props {
   name: string;
-  value: string;
+  value: string | number;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   type: string;
 }
