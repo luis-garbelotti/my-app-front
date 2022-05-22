@@ -142,6 +142,7 @@ export default function Home() {
                       </Box>
                       <Box component='h4' sx={styles.projectsInfosRemaining} >
                         { 
+                          p.project.isDone ? 'Finalizado' :
                           dayjs(p.project.limitDate).diff(new Date(), 'day') > 0 ? 
                             <Typography sx={{ color: '#fff', fontWeight: 700 }}>
                               {dayjs(p.project.limitDate).diff(new Date(), 'day') + 1} dia(s)!
