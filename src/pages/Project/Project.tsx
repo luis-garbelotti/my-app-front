@@ -32,7 +32,6 @@ export default function Project() {
     api.getProjectById(auth.token, projectId, auth.id)
     .then((response) => {
       setProjectData(response.data);
-      console.log(response.data);
     })
     .catch((error) => {
       setMessage({ type: 'error', text: error.response.data });
