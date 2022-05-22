@@ -131,7 +131,7 @@ export default function Home() {
                       id="panel1bh-header"
                       sx={{ paddingLeft: 0, }}
                     >
-                      <Box component='div' sx={{pl: '15px'}} onClick={() => navigate(`/project/${p.project.id}`)}>
+                      <Box component='div' sx={{pl: '15px'}} onClick={() => navigate(`/projects/${p.project.id}`)}>
                         <VisibilityIcon  />
                       </Box>
                       <Box component='h4' sx={styles.projectsInfosTitle} >

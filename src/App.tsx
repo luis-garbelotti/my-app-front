@@ -37,8 +37,8 @@ function App() {
               <Route path='/' element={<SignIn />} />
               <Route path='/signup' element={<SignUp />} />
               <Route path='/home' element={<Home />} />
-              <Route path='/project/:projectId' element={<Project />} />
-              <Route path='/briefings' element={<Briefings />} />
+              <Route path='/projects/:projectId' element={<Project />} />
+              <Route path='/projects/:projectId/briefing' element={<Briefings />} />
               <Route path='/add' element={<Add />} />
             </Routes>
           </BrowserRouter>
