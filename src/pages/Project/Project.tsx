@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AddButton from '../../components/AddComponents/AddButton';
 import AddText from '../../components/AddComponents/AddText';
 import Header from '../../components/Header/Header';
@@ -14,11 +14,13 @@ import useAlert from '../../hooks/useAlert';
 import useAuth from '../../hooks/useAuth';
 import api, { ProjectClientData } from '../../services/api';
 import dayjs from 'dayjs';
+import BriefingButton from '../../components/ProjectPage/BriefingButton';
 
 export default function Project() {
 
   const { auth } = useAuth();
   const { setMessage } = useAlert();
+  const navigate = useNavigate();
   const { projectId } = useParams<string>();
   const [projectData, setProjectData] = useState<ProjectClientData>();
 
@@ -105,6 +107,7 @@ export default function Project() {
               <TextInfo>
                 {projectData.client.phone}
               </TextInfo>
+            <BriefingButton onClick={() => navigate(`/projects/${projectId}/briefing`)}/>
             </Box>
         </>
         }

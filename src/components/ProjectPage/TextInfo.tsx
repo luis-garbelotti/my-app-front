@@ -1,5 +1,4 @@
 import { Box } from '@mui/material';
-import styled from 'styled-components';
 
 interface Props {
   children: React.ReactNode
@@ -13,7 +12,7 @@ const style = {
   border: 'none',
   margin: '0 0 10px 0',
 
-  bgcolor: '#343434',
+  bgcolor: '#5d5d5d',
   color: '#fff',
 
   ':focus': {
@@ -29,21 +28,3 @@ export default function TextInfo({ children }: Props) {
       
   );
 }
-
-const Text = styled.div`
-  
-  width: 100%;
-  height: 5vh;
-  padding: 0 15px;
-  border-radius: 5px;
-  border: none;
-  margin: 0 0 10px 0;
-  
-  background-color: #343434;
-  color: #fff;
-
-  :focus {
-    outline: 2px solid #BF0000;
-  }
-
-`;

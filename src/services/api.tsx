@@ -56,6 +56,13 @@ export interface ClientData {
   phone: string;
 }
 
+export interface BriefingData {
+  id: number;
+  projectId: number;
+  question: string;
+  answer: string;
+}
+
 export type TabValue = 'Projeto' | 'Cliente';
 
 export type AuthData = Omit<UserData, 'name' | 'id'>
@@ -65,6 +72,8 @@ export type SignUpData = Omit<UserData, 'id'>
 export type ProjectLoginData = Omit<ProjectData, 'id'>
 
 export type ClientRegisterData = Omit<ClientData, 'id'>
+
+export type Briefing = Omit<BriefingData, 'id' | 'projectId'>
 
 async function signUp(body: SignUpData) {
   const promise = axios.post(`${BASE_URL}/signup`, body);
@@ -108,6 +117,18 @@ async function getProjectById(token: string, projectId: string | undefined, user
   return promise;
 }
 
+async function getProjectBriefing(token: string, projectId: string | undefined) {
+  const promise = axios.get(`${BASE_URL}/projects/${projectId}/briefing`, createConfig(token));
+
+  return promise;
+}
+
+async function createProjectBriefing(token: string, projectId: string | undefined, body: Briefing) {
+  const promise = axios.post(`${BASE_URL}/projects/${projectId}/briefing`, body, createConfig(token));
+
+  return promise;
+}
+
 const api = {
   signUp,
   signIn,
@@ -115,7 +136,9 @@ const api = {
   getClients,
   createNewClient,
   getProject,
-  getProjectById
+  getProjectById,
+  getProjectBriefing,
+  createProjectBriefing,
 };
 
 export default api;
