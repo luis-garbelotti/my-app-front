@@ -136,6 +136,7 @@ export default function AddProject() {
 
     if (!name || !email || !phone) {
       setMessage({ type: 'warning', text: 'Preencha todos os campos.' });
+      return;
     }
 
     try {
@@ -143,7 +144,7 @@ export default function AddProject() {
       setMessage({ type: 'success', text: 'Cliente cadastrado com sucesso!' });
       navigate('/home');
     } catch (error: AxiosError | Error | any) {
-      setMessage({ type: 'error', text: 'Algo deu errado. Tente novamente!' });
+      setMessage({ type: 'error', text: error.response.data });
     }
   }
 

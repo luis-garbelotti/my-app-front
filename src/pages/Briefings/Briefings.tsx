@@ -10,7 +10,6 @@ import NavBar from '../../components/Navbar/Navbar';
 import PageContainer from '../../components/PageContainer/PageContainer';
 import PageContent from '../../components/PageContent/PageContent';
 import TextInfo from '../../components/ProjectPage/TextInfo';
-import ProjectResume from '../../components/ProjectResume/ProjectResume';
 import ResumeContainer from '../../components/ResumeContainer/ResumeContainer';
 import useAlert from '../../hooks/useAlert';
 import useAuth from '../../hooks/useAuth';
@@ -36,9 +35,7 @@ export default function Briefings() {
       .catch((error) => {
         error.response.status === 404 ?
           setMessage({ type: 'warning', text: 'Você não tem briefing nesse projeto.' }) : 
-          error.response.status === 500 ?
-          setMessage({ type: 'error', text: 'Algo deu errado. Tente novamente.' }) : 
-          '';
+          setMessage({ type: 'error', text: error.response.data });
       });
   }, [lever]);
 

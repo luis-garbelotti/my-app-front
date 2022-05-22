@@ -80,7 +80,7 @@ export default function Home() {
       setProjects(response.data);
     })
     .catch((error) => {
-      setMessage({ type: 'error', text: 'Algo deu errado na busca de projetos. Tente novamente!' });
+      setMessage({ type: 'error', text: error.response.data });
       
     });
   }, []);

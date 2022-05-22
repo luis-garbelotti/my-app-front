@@ -85,7 +85,7 @@ export default function New({ setLever, lever }: Props) {
       setFormData({question: '', answer: ''});
     })
     .catch((error) => {
-      setMessage({type: 'error', text: 'Algo deu errado, tente novamente.'});
+      setMessage({ type: 'error', text: error.response.data });
     });
   }
 

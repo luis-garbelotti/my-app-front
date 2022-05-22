@@ -34,7 +34,7 @@ export default function Project() {
       setProjectData(response.data);
     })
     .catch((error) => {
-      setMessage({type: 'error', text: 'Erro ao retornar dados do projeto. Tente novamente'});
+      setMessage({ type: 'error', text: error.response.data });
     });
   }, []);
 
