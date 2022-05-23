@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import logoGo from '../../assets/redlabIcon.png';
 
 const styles = {
   container: {
@@ -35,7 +36,7 @@ export default function AddButton() {
     <Box component='div' sx={styles.container} onClick={() => navigate('/add')}>
       <Box component='h4' sx={styles.text}>Adicionar</Box>
       <Box component='div' sx={styles.iconContainer}>
-        <AddOutlinedIcon sx={{ color: '#fff' }} />
+        <img src={logoGo} width='15px' />
       </Box>
     </Box>
   );
