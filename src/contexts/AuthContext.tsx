@@ -13,7 +13,7 @@ export function AuthProvider({ children }: any) {
 
   function logout(){
     setAuth(null);
-    localStorage.removeItem(auth);
+    localStorage.removeItem('auth');
   }
 
   return (
