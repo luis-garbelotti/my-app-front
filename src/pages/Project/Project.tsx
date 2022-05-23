@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, TextareaAutosize } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AddButton from '../../components/AddComponents/AddButton';
@@ -15,6 +15,19 @@ import useAuth from '../../hooks/useAuth';
 import api, { ProjectClientData } from '../../services/api';
 import dayjs from 'dayjs';
 import PageButton from '../../components/ProjectPage/PageButton';
+
+const styles = {
+  textArea: {
+    width: '100%',
+    maxWidth: '100%',
+    borderRadius: '5px',
+    border: 'none',
+    height: '80px',
+    padding: '15px',
+    backgroundColor: '#5d5d5d',
+    color: '#fff',
+  }
+};
 
 export default function Project() {
 
@@ -65,15 +78,23 @@ export default function Project() {
           <AddText >
             Resumo
           </AddText>
-          <TextInfo>
-            {projectData.resume}
-          </TextInfo>
+          <TextareaAutosize
+                  aria-label="Resumo"
+                  name='resume'
+                  value={projectData.resume}
+                  style={styles.textArea}
+                  readOnly
+          />
           <AddText >
             Informações importantes
           </AddText>
-          <TextInfo>
-            {projectData.importantInfos}
-          </TextInfo>
+              <TextareaAutosize
+                aria-label="infos"
+                name='importantInfos'
+                value={projectData.importantInfos}
+                style={styles.textArea}
+                readOnly
+              />
 
             <Box component='div' 
               sx={{

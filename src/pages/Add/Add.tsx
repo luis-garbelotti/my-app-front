@@ -19,7 +19,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabPanel from '@mui/lab/TabPanel';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextareaAutosize } from '@mui/material';
 import { valueToPercent } from '@mui/base';
 
 const styles = {
@@ -47,6 +47,16 @@ const styles = {
     mb: '10px',
     color: '#fff'
   },
+  textArea: {
+    width: '100%',
+    maxWidth: '100%',
+    borderRadius: '5px',
+    border: 'none',
+    height: '80px',
+    padding: '15px',
+    backgroundColor: '#343434',
+    color: '#fff',
+  }
 };
 
 export default function AddProject() {
@@ -89,6 +99,11 @@ export default function AddProject() {
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
     
+  }
+
+  function handleTextAreaChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    e.preventDefault();
+    setProjectData({ ...projectData, [e.target.name]: e.target.value });
   }
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: TabValue) => {
@@ -194,20 +209,22 @@ export default function AddProject() {
                 <AddText>
                   Resumo
                 </AddText>
-                <AddInput
-                  name="resume"
+                <TextareaAutosize
+                  aria-label="Resumo"
+                  name='resume'
                   value={projectData.resume}
-                  onChange={handleInputChange}
-                  type='text'
+                  style={styles.textArea}
+                  onChange={handleTextAreaChange}
                 />
                 <AddText>
                   Informações importantes
                 </AddText>
-                <AddInput
-                  name="importantInfos"
+                <TextareaAutosize
+                  aria-label="infos"
+                  name='importantInfos'
                   value={projectData.importantInfos}
-                  onChange={handleInputChange}
-                  type='text'
+                  style={styles.textArea}
+                  onChange={handleTextAreaChange}
                 />
                 <Box component='div' sx={styles.dateContainer} >
                   <Box component='div' >
