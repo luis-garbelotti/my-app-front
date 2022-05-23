@@ -99,6 +99,12 @@ export default function Project() {
                 </TextInfo>
               </Box>
             </Box>
+            <AddText >
+              Valor
+            </AddText>
+            <TextInfo>
+              {(projectData.value / 100).toString().replace('.',',')}
+            </TextInfo>
             <br />
             <br />
               <AddText >

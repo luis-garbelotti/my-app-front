@@ -1,4 +1,6 @@
 import { Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import logo from '../../assets/logo1.png';
 
 const style = {
@@ -15,12 +17,20 @@ const style = {
 };
 
 export default function MiniLogo() {
+
+  const navigate = useNavigate();
+
   return (
-    <Box component="div" sx={style}>
-      <img
+    <Box component="div" sx={style} onClick={() => navigate('/home')} >
+      <Img
         src={logo}
-        width='70%'
       />
     </Box>
   );
 }
+
+const Img = styled.img`
+
+  cursor: pointer;
+  width: 70%;
+`;

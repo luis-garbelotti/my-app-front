@@ -92,6 +92,9 @@ async function signIn(body: AuthData) {
 }
 
 async function createNewProject(body: ProjectSendData, token: string, userId: string) {
+  const number = +body.value;
+  body = {...body, value: number * 100};
+  
   const promise = axios.post(`${BASE_URL}/users/${userId}/project`, body, createConfig(token));
 
   return promise;

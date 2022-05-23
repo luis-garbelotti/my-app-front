@@ -43,7 +43,6 @@ export default function NavBar() {
 
   function handleLogout() {
     navigate('/');
-    setAuth(null);
     logout();
   }
 

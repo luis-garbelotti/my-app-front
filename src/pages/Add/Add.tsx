@@ -124,7 +124,7 @@ export default function AddProject() {
       navigate('/home');
     } catch (error: AxiosError | Error | any) {
       setMessage({ type: 'error', text: error.response.data });
-    }
+    } 
 
   }
 
@@ -183,13 +183,13 @@ export default function AddProject() {
                   type='text'
                 />
                 <AddText>
-                  Valor
+                  Valor (Ex: 500,00)
                 </AddText>
                 <AddInput
                   name="value"
-                  value={projectData.value}
+                  value={(projectData.value)}
                   onChange={handleInputChange}
-                  type='text'
+                  type='number'
                 />
                 <AddText>
                   Resumo
